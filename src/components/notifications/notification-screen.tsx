@@ -11,7 +11,7 @@ type ScreenStatus = "active" | "success" | "snoozed" | "dismissed";
 interface NotificationScreenProps {
   config: NotificationConfig;
   card: ReactNode;
-  className?: string;
+  className?: string | undefined;
 }
 
 /**
