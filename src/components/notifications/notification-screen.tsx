@@ -29,12 +29,12 @@ export function NotificationScreen({ config, card, className }: NotificationScre
   return (
     <div
       className={cn(
-        "dimi-screen relative",
+        "dimi-screen relative flex justify-center",
         isRed && "dimi-screen-red",
         className,
       )}
     >
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[430px] flex-col px-6 pb-8 pt-9">
+      <div className="relative z-10 flex h-full max-h-[880px] w-full max-w-[430px] flex-col px-6 pb-8 pt-9">
         <header>
           <img
             src={logo}
@@ -56,18 +56,18 @@ export function NotificationScreen({ config, card, className }: NotificationScre
                 alt={config.heroAlt}
                 width={1024}
                 height={1024}
-                className="pointer-events-none absolute -top-4 right-[-30px] w-56 drop-shadow-xl"
+                className="pointer-events-none absolute -top-6 right-[-34px] w-60 drop-shadow-xl"
               />
               <h1 className="relative max-w-[58%] text-[2.35rem] font-extrabold leading-[1.08] tracking-tight text-foreground">
                 {config.headline.map((segment, index) => (
                   <span
                     key={index}
                     className={cn(
+                      !segment.accent && "block",
                       segment.accent && (isRed ? "text-yt-red" : "text-primary"),
                     )}
                   >
                     {segment.text}
-                    {index < config.headline.length - 1 ? " " : ""}
                   </span>
                 ))}
               </h1>
