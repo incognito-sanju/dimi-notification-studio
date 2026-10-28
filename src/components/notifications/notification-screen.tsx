@@ -29,7 +29,7 @@ export function NotificationScreen({ config, card, className }: NotificationScre
   return (
     <div
       className={cn(
-        "dimi-screen relative flex justify-center",
+        "dimi-screen relative flex items-center justify-center",
         isRed && "dimi-screen-red",
         className,
       )}
