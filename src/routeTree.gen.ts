@@ -10,33 +10,68 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NotifyPlannerRouteImport } from './routes/notify/planner'
+import { Route as NotifyReminderRouteImport } from './routes/notify/reminder'
+import { Route as NotifyYoutubeRouteImport } from './routes/notify/youtube'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotifyPlannerRoute = NotifyPlannerRouteImport.update({
+  id: '/notify/planner',
+  path: '/notify/planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotifyReminderRoute = NotifyReminderRouteImport.update({
+  id: '/notify/reminder',
+  path: '/notify/reminder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotifyYoutubeRoute = NotifyYoutubeRouteImport.update({
+  id: '/notify/youtube',
+  path: '/notify/youtube',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/notify/planner': typeof NotifyPlannerRoute
+  '/notify/reminder': typeof NotifyReminderRoute
+  '/notify/youtube': typeof NotifyYoutubeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/notify/planner': typeof NotifyPlannerRoute
+  '/notify/reminder': typeof NotifyReminderRoute
+  '/notify/youtube': typeof NotifyYoutubeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/notify/planner': typeof NotifyPlannerRoute
+  '/notify/reminder': typeof NotifyReminderRoute
+  '/notify/youtube': typeof NotifyYoutubeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/notify/planner' | '/notify/reminder' | '/notify/youtube'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/notify/planner' | '/notify/reminder' | '/notify/youtube'
+  id:
+    | '__root__'
+    | '/'
+    | '/notify/planner'
+    | '/notify/reminder'
+    | '/notify/youtube'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  NotifyPlannerRoute: typeof NotifyPlannerRoute
+  NotifyReminderRoute: typeof NotifyReminderRoute
+  NotifyYoutubeRoute: typeof NotifyYoutubeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +83,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notify/planner': {
+      id: '/notify/planner'
+      path: '/notify/planner'
+      fullPath: '/notify/planner'
+      preLoaderRoute: typeof NotifyPlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notify/reminder': {
+      id: '/notify/reminder'
+      path: '/notify/reminder'
+      fullPath: '/notify/reminder'
+      preLoaderRoute: typeof NotifyReminderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notify/youtube': {
+      id: '/notify/youtube'
+      path: '/notify/youtube'
+      fullPath: '/notify/youtube'
+      preLoaderRoute: typeof NotifyYoutubeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  NotifyPlannerRoute: NotifyPlannerRoute,
+  NotifyReminderRoute: NotifyReminderRoute,
+  NotifyYoutubeRoute: NotifyYoutubeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

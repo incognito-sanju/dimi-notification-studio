@@ -131,15 +131,14 @@ export function SlideToAction({ label, accent, onComplete, className }: SlideToA
         {label}
       </span>
       <div
-        className="absolute top-1/2 flex items-center justify-center rounded-full bg-card shadow-lg"
+        className="absolute top-1/2 flex -translate-y-1/2 items-center justify-center rounded-full bg-card shadow-lg"
         style={{
           width: THUMB_SIZE,
           height: THUMB_SIZE,
-          left: TRACK_PADDING,
-          transform: `translate(calc(${progress} * (100% - ${THUMB_SIZE + TRACK_PADDING * 2}px)), -50%)`,
+          left: `calc(${TRACK_PADDING}px + ${progress} * (100% - ${THUMB_SIZE + TRACK_PADDING * 2}px))`,
           transition: dragging
             ? "none"
-            : "transform 300ms cubic-bezier(0.22, 1, 0.36, 1)",
+            : "left 300ms cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
         <ChevronRight
