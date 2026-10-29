@@ -76,9 +76,9 @@ export function NotificationScreen({ config, card, className }: NotificationScre
                 alt={config.heroAlt}
                 width={1024}
                 height={1024}
-                className="pointer-events-none absolute -top-9 right-0 w-52 drop-shadow-xl"
+                className="pointer-events-none absolute -top-12 right-0 w-48 drop-shadow-xl"
               />
-              <h1 className="relative max-w-[60%] text-[2.35rem] font-extrabold leading-[1.1] tracking-tight text-foreground">
+              <h1 className="relative max-w-[56%] text-[2.35rem] font-extrabold leading-[1.1] tracking-tight text-foreground">
                 {config.headline.map((segment, index) => (
                   <span
                     key={index}
