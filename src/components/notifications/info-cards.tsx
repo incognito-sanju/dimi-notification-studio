@@ -16,7 +16,7 @@ function InfoHeader({
     <div className="flex items-center gap-3">
       <span
         className={cn(
-          "flex h-11 w-11 items-center justify-center rounded-2xl",
+          "flex h-10 w-10 items-center justify-center rounded-xl",
           tone === "amber" ? "bg-amber-soft" : "bg-yt-soft",
         )}
       >
@@ -33,27 +33,27 @@ export function PlannerEventCard({
   event?: typeof demoData.plannerEvent;
 }) {
   return (
-    <div className="dimi-card p-5">
+    <div className="dimi-card p-6">
       <InfoHeader
         tone="amber"
         label={event.label}
         icon={<CalendarDays className="h-5 w-5 text-primary" />}
       />
-      <h3 className="mt-3 text-[1.55rem] font-bold leading-tight tracking-tight text-foreground">
+      <h3 className="mt-3.5 text-[1.55rem] font-bold leading-tight tracking-tight text-foreground">
         {event.title}
       </h3>
-      <div className="mt-4 flex items-center gap-4">
+      <div className="mt-5 flex items-center gap-4">
         <div className="flex flex-1 items-center gap-2.5 rounded-2xl bg-muted/70 px-4 py-3">
           <Clock className="h-4 w-4 shrink-0 text-primary" />
           <span className="text-[15px] font-semibold text-foreground">
             {event.startTime} — {event.endTime}
           </span>
         </div>
-        <div className="pr-1 text-right">
-          <p className="text-[1.55rem] font-bold leading-none text-foreground">
+        <div className="flex items-baseline gap-1.5 pr-1">
+          <span className="text-[1.55rem] font-bold leading-none text-foreground">
             {event.durationMinutes}
-          </p>
-          <p className="mt-1 text-xs font-medium text-muted-foreground">min</p>
+          </span>
+          <span className="text-xs font-medium text-muted-foreground">min</span>
         </div>
       </div>
     </div>
@@ -66,33 +66,19 @@ export function PlaylistCard({
   playlist?: typeof demoData.playlist;
 }) {
   return (
-    <div className="dimi-card p-5">
+    <div className="dimi-card p-6">
       <InfoHeader
         tone="red"
         label={playlist.label}
         icon={<Youtube className="h-5 w-5 text-yt-red" />}
       />
-      <div className="mt-3 flex items-start gap-4">
+      <div className="mt-3.5 flex items-start gap-4">
         <div className="min-w-0 flex-1">
           <h3 className="text-[1.3rem] font-bold leading-snug tracking-tight text-foreground">
             {playlist.title}
           </h3>
           <p className="mt-1 text-sm font-medium text-muted-foreground">
             {playlist.channel}
-          </p>
-          <div className="mt-3 flex items-center gap-2.5">
-            <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
-              <div
-                className="progress-red h-full rounded-full"
-                style={{ width: `${playlist.progressPercent}%` }}
-              />
-            </div>
-            <span className="text-sm font-bold text-foreground">
-              {playlist.progressPercent}%
-            </span>
-          </div>
-          <p className="mt-2 text-xs font-medium text-muted-foreground">
-            {playlist.videosWatched} of {playlist.videosTotal} videos watched
           </p>
         </div>
         <img
@@ -101,9 +87,23 @@ export function PlaylistCard({
           width={1280}
           height={720}
           loading="lazy"
-          className="h-[76px] w-[132px] shrink-0 rounded-xl object-cover shadow-md"
+          className="h-[80px] w-[140px] shrink-0 rounded-2xl object-cover shadow-md"
         />
       </div>
+      <div className="mt-4 flex items-center gap-3">
+        <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
+          <div
+            className="progress-red h-full rounded-full"
+            style={{ width: `${playlist.progressPercent}%` }}
+          />
+        </div>
+        <span className="text-sm font-bold text-foreground">
+          {playlist.progressPercent}%
+        </span>
+      </div>
+      <p className="mt-2 text-xs font-medium text-muted-foreground">
+        {playlist.videosWatched} of {playlist.videosTotal} videos watched
+      </p>
     </div>
   );
 }
@@ -114,13 +114,13 @@ export function ReminderCard({
   reminder?: typeof demoData.reminder;
 }) {
   return (
-    <div className="dimi-card p-5">
+    <div className="dimi-card p-6">
       <InfoHeader
         tone="amber"
         label={reminder.label}
         icon={<Bell className="h-5 w-5 text-primary" />}
       />
-      <h3 className="mt-3 text-[1.55rem] font-bold leading-tight tracking-tight text-foreground">
+      <h3 className="mt-3.5 text-[1.55rem] font-bold leading-tight tracking-tight text-foreground">
         {reminder.title}
       </h3>
       <div className="mt-2 flex items-center gap-2 text-[15px] font-semibold text-muted-foreground">

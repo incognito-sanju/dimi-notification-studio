@@ -1,5 +1,5 @@
-import { Check, Clock, X } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { BatteryFull, Check, Clock, Signal, Wifi, X } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import logo from "@/assets/notifications/dimi-logo.png";
 import type { NotificationConfig } from "@/components/notifications/data";
@@ -15,14 +15,32 @@ interface NotificationScreenProps {
 }
 
 /**
- * Shared full-screen notification shell: DIMI branding, headline with hero
- * artwork, dynamic info card, slide-to-action slider, and the common
+ * Shared full-screen notification shell: status bar, DIMI branding, headline
+ * with hero artwork, dynamic info card, slide-to-action slider, and the common
  * Snooze / Not-now actions. Only the artwork, accent, card and labels change
  * per notification type.
+ *
+ * Vertical rhythm is distributed with proportional flex spacers so the layout
+ * stays balanced on any phone height instead of pooling empty space in one
+ * place.
  */
 export function NotificationScreen({ config, card, className }: NotificationScreenProps) {
   const [status, setStatus] = useState<ScreenStatus>("active");
+  const [clock, setClock] = useState<string | null>(null);
   const isRed = config.accent === "red";
+
+  useEffect(() => {
+    const update = () =>
+      setClock(
+        new Date().toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+        }),
+      );
+    update();
+    const id = window.setInterval(update, 30_000);
+    return () => window.clearInterval(id);
+  }, []);
 
   const reset = () => setStatus("active");
 
@@ -34,31 +52,33 @@ export function NotificationScreen({ config, card, className }: NotificationScre
         className,
       )}
     >
-      <div className="relative z-10 flex h-full max-h-[880px] w-full max-w-[430px] flex-col px-6 pb-8 pt-9">
-        <header>
+      <div className="relative z-10 flex h-full max-h-[880px] w-full max-w-[430px] flex-col px-7 pb-7 pt-3">
+        <StatusBar time={clock} />
+
+        <header className="mt-5 flex flex-col items-center">
           <img
             src={logo}
             alt="DIMI logo"
             width={512}
             height={512}
-            className="mx-auto h-14 w-14"
+            className="h-12 w-12"
           />
-          <p className="mt-2 text-center text-sm font-semibold tracking-[0.42em] text-foreground">
+          <p className="mt-1.5 text-[13px] font-semibold tracking-[0.42em] text-foreground">
             DIMI
           </p>
         </header>
 
         {status === "active" ? (
           <>
-            <div className="relative mt-8 min-h-[176px]">
+            <div className="relative mt-9">
               <img
                 src={config.heroSrc}
                 alt={config.heroAlt}
                 width={1024}
                 height={1024}
-                className="pointer-events-none absolute -top-6 right-[-34px] w-60 drop-shadow-xl"
+                className="pointer-events-none absolute -top-12 right-0 w-48 drop-shadow-xl"
               />
-              <h1 className="relative max-w-[58%] text-[2.35rem] font-extrabold leading-[1.08] tracking-tight text-foreground">
+              <h1 className="relative max-w-[56%] text-[2.35rem] font-extrabold leading-[1.1] tracking-tight text-foreground">
                 {config.headline.map((segment, index) => (
                   <span
                     key={index}
@@ -73,20 +93,21 @@ export function NotificationScreen({ config, card, className }: NotificationScre
               </h1>
             </div>
 
-            <div className="mt-auto pt-8">{card}</div>
+            <div aria-hidden className="min-h-8 flex-[3]" />
+            <div>{card}</div>
+            <div aria-hidden className="min-h-6 flex-[2]" />
 
             <SlideToAction
               label={config.sliderLabel}
               accent={config.accent}
               onComplete={() => setStatus("success")}
-              className="mt-6"
             />
 
-            <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="mt-3.5 grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setStatus("snoozed")}
-                className="flex items-center justify-center gap-2.5 rounded-full border border-border/80 bg-card/80 py-3 text-[15px] font-semibold text-foreground transition-colors hover:bg-card"
+                className="flex h-12 items-center justify-center gap-2.5 rounded-full border border-border/80 bg-card/80 text-[15px] font-semibold text-foreground transition-colors hover:bg-card"
               >
                 <Clock className="h-4 w-4 text-muted-foreground" />
                 Snooze 5 min
@@ -94,9 +115,9 @@ export function NotificationScreen({ config, card, className }: NotificationScre
               <button
                 type="button"
                 onClick={() => setStatus("dismissed")}
-                className="flex items-center justify-center gap-2.5 rounded-full border border-destructive/15 bg-destructive/10 py-3 text-[15px] font-semibold text-foreground transition-colors hover:bg-destructive/15"
+                className="flex h-12 items-center justify-center gap-2 rounded-full border border-destructive/15 bg-destructive/10 text-[15px] font-semibold text-foreground transition-colors hover:bg-destructive/15"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-destructive/15">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-destructive/15">
                   <X className="h-3.5 w-3.5 text-destructive" />
                 </span>
                 Not now
@@ -107,6 +128,20 @@ export function NotificationScreen({ config, card, className }: NotificationScre
           <StatusPanel config={config} status={status} onReset={reset} />
         )}
       </div>
+    </div>
+  );
+}
+
+/** Slim phone status bar: live clock on the left, signal / wi-fi / battery on the right. */
+function StatusBar({ time }: { time: string | null }) {
+  return (
+    <div className="flex h-5 items-center justify-between text-[11px] font-semibold text-foreground/45">
+      <span className="tabular-nums">{time ?? ""}</span>
+      <span className="flex items-center gap-1.5" aria-hidden>
+        <Signal className="h-3 w-3" />
+        <Wifi className="h-3 w-3" />
+        <BatteryFull className="h-4 w-4" />
+      </span>
     </div>
   );
 }
